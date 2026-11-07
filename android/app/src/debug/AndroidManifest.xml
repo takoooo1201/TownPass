@@ -4,4 +4,6 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 開發時允許 WebView 以 HTTP 連到電腦上的微服務開發伺服器（只在 debug 版） -->
+    <application android:networkSecurityConfig="@xml/network_security_config" />
 </manifest>

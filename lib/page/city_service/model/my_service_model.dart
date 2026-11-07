@@ -1,5 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:town_pass/gen/assets.gen.dart';
+
+/// 「福利找上門」微服務網址。
+/// 部署後以 `--dart-define=WELFARE_CARE_URL=https://...` 指定正式網址；
+/// 未指定時連到電腦上的開發伺服器（Android 模擬器透過 10.0.2.2 連回電腦）。
+String get welfareCareUrl {
+  const fromEnv = String.fromEnvironment('WELFARE_CARE_URL');
+  if (fromEnv.isNotEmpty) return fromEnv;
+  return Platform.isAndroid ? 'http://10.0.2.2:5173/' : 'http://localhost:5173/';
+}
 
 // 先於 MyServiceItemId enum 加入新服務；
 // 再在 MyServiceIdExt 擴充中加入該服務的 MyServiceItem 物件。
@@ -29,6 +40,7 @@ enum MyServiceItemId {
   library,
   locationSearch,
   zoo,
+  welfareCare,
   ;
 }
 
@@ -182,6 +194,13 @@ extension MyServiceIdExt on MyServiceItemId {
           icon: Assets.svg.iconZoo24.svg(),
           category: MyServiceCategory.explore,
           destinationUrl: '',
+        ),
+      MyServiceItemId.welfareCare => MyServiceItem(
+          title: '福利找上門',
+          description: '補助資格媒合、請人協助申請與進度追蹤',
+          icon: Assets.svg.iconWelfareCare.svg(),
+          category: MyServiceCategory.cityService,
+          destinationUrl: welfareCareUrl,
         ),
     };
   }
